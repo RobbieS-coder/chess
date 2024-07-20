@@ -5,4 +5,10 @@ class Piece
   def initialize(colour)
     @colour = colour
   end
+
+  private
+
+  def unicode_symbol(white_symbol, black_symbol)
+    @colour == 'white' ? white_symbol : black_symbol
+  end
 end

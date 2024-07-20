@@ -9,4 +9,8 @@ class Display
   def self.invalid_player_name(colour)
     puts "Enter a name#{" that is different to the other player's" if colour == 'black'}: "
   end
+
+  def self.display_board(board, moves)
+    board.each { |row| puts row.join(' ') }
+  end
 end

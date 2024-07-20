@@ -15,6 +15,10 @@ class Board
 
   def valid_move?; end
 
+  def symbol_board
+    @game_board.map { |row| row.map { |square| square.nil? ? ' ' : square.symbol } }
+  end
+
   private
 
   def assign_board
@@ -22,10 +26,10 @@ class Board
     w = 'white'
     [[Rook.new(b), Knight.new(b), Bishop.new(b), Queen.new(b), King.new(b), Bishop.new(b), Knight.new(b), Rook.new(b)],
      Array.new(8) { Pawn.new(b) },
-     Array.new(8) { nil },
-     Array.new(8) { nil },
-     Array.new(8) { nil },
-     Array.new(8) { nil },
+     Array.new(8),
+     Array.new(8),
+     Array.new(8),
+     Array.new(8),
      Array.new(8) { Pawn.new(w) },
      [Rook.new(w), Knight.new(w), Bishop.new(w), Queen.new(w), King.new(w), Bishop.new(w), Knight.new(w), Rook.new(w)]]
   end
