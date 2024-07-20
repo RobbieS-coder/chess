@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'display'
+
+# Holds player information and gets user input
 class Player
   attr_reader :name, :colour
 
@@ -13,14 +16,12 @@ class Player
   private
 
   def assign_name(colour, other_name = nil)
-    puts "Input #{colour.capitalize}'s name: "
+    Display.player_name(colour)
     loop do
       name = gets.chomp
       return name unless name.empty? || name == other_name
 
-      puts "Enter a name#{" that is different to the other player's" if colour == 'black'}: "
+      Display.invalid_player_name(colour)
     end
   end
-
-  def valid_move?; end
 end

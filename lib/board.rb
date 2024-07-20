@@ -7,10 +7,13 @@ require_relative 'pieces/pawn'
 require_relative 'pieces/queen'
 require_relative 'pieces/rook'
 
+# Holds game board and interfaces with pieces
 class Board
   def initialize(game_board = assign_board)
     @game_board = game_board
   end
+
+  def valid_move?; end
 
   private
 
