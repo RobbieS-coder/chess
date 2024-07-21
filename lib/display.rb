@@ -11,6 +11,22 @@ class Display
   end
 
   def self.display_board(board, moves)
-    board.each { |row| puts row.join(' ') }
+    board.each_with_index do |row, row_index|
+      puts format_empty_line(row_index)
+      row.each_with_index { |piece, piece_index| row[piece_index] = format_square(piece, row_index, piece_index) }
+      puts row.join('')
+      puts format_empty_line(row_index)
+    end
   end
+
+  def self.format_square(piece, row_index, piece_index)
+    square_colour = (row_index + piece_index).even? ? "\e[48;5;243m" : "\e[48;5;16m"
+    "#{square_colour}  #{piece}  \e[0m"
+  end
+
+  def self.format_empty_line(row_ind)
+    (0..7).to_a.map { |sq_ind| "#{(row_ind + sq_ind).even? ? "\e[48;5;243m" : "\e[48;5;16m"}     \e[0m" }.join('')
+  end
+
+  private_class_method :format_square, :format_empty_line
 end

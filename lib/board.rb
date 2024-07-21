@@ -24,13 +24,15 @@ class Board
   def assign_board
     b = 'black'
     w = 'white'
-    [[Rook.new(b), Knight.new(b), Bishop.new(b), Queen.new(b), King.new(b), Bishop.new(b), Knight.new(b), Rook.new(b)],
-     Array.new(8) { Pawn.new(b) },
-     Array.new(8),
-     Array.new(8),
-     Array.new(8),
-     Array.new(8),
-     Array.new(8) { Pawn.new(w) },
-     [Rook.new(w), Knight.new(w), Bishop.new(w), Queen.new(w), King.new(w), Bishop.new(w), Knight.new(w), Rook.new(w)]]
+    [back_row(b), pawn_row(b), Array.new(8), Array.new(8), Array.new(8), Array.new(8), pawn_row(w), back_row(w)]
+  end
+
+  def back_row(colour)
+    [Rook.new(colour), Knight.new(colour), Bishop.new(colour), Queen.new(colour),
+     King.new(colour), Bishop.new(colour), Knight.new(colour), Rook.new(colour)]
+  end
+
+  def pawn_row(colour)
+    Array.new(8) { Pawn.new(colour) }
   end
 end
