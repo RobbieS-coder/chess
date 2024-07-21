@@ -15,7 +15,7 @@ class Player
 
   private
 
-  def assign_name(colour, other_name = nil)
+  def assign_name(colour, other_name)
     Display.player_name(colour)
     loop do
       name = gets.chomp

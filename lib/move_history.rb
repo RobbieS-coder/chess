@@ -9,6 +9,8 @@ class MoveHistory
   def add_move; end
 
   def recent_moves
-    @history[-4, 4]
+    return @history[-4, 4] if @history.length >= 4
+
+    @history
   end
 end

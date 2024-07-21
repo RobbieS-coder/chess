@@ -7,9 +7,8 @@ require_relative 'move_history'
 
 # Contains the loop to play chess and interfaces with all main classes
 class Chess
-  def initialize(board = Board.new, white = Player.new('white'), black = Player.new('black', white.name),
-                 move_history = MoveHistory.new)
-    @board = board
+  def initialize(white = Player.new('white'), black = Player.new('black', white.name), move_history = MoveHistory.new)
+    @board = Board.new
     @white = white
     @black = black
     @move_history = move_history
@@ -17,6 +16,7 @@ class Chess
   end
 
   def play
-    Display.display_board(@board.symbol_board, @move_history.recent_moves)
+    Display.display_turn(@current_player.colour)
+    Display.display(@board.symbol_board, @move_history.recent_moves, @current_player.colour)
   end
 end

@@ -9,8 +9,8 @@ require_relative 'pieces/rook'
 
 # Holds game board and interfaces with pieces
 class Board
-  def initialize(game_board = assign_board)
-    @game_board = game_board
+  def initialize
+    @game_board = assign_board
   end
 
   def valid_move?; end
