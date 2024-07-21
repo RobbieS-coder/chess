@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'display'
+require_relative 'ui'
 
 # Holds player information and gets user input
 class Player
@@ -16,12 +16,12 @@ class Player
   private
 
   def assign_name(colour, other_name)
-    Display.player_name(colour)
+    puts "Input #{colour.capitalize}'s name: "
     loop do
       name = gets.chomp
       return name unless name.empty? || name == other_name
 
-      Display.invalid_player_name(colour)
+      puts "Enter a name#{" that is different to the other player's" if colour == 'black'}: "
     end
   end
 end
