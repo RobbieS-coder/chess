@@ -2,6 +2,8 @@
 
 # Deals with outputs to the user
 module Displayable
+  private
+
   def display_turn
     puts "#{@current_player.colour.capitalize}'s turn"
   end

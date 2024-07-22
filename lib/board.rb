@@ -13,7 +13,7 @@ class Board
     @game_board = assign_board
   end
 
-  def valid_move?; end
+  def valid_move?(move); end
 
   def symbol_board
     @game_board.map { |row| row.map { |square| square.nil? ? ' ' : square.symbol } }

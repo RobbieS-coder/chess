@@ -11,8 +11,6 @@ class Player
     @name = name
   end
 
-  def player_input; end
-
   private
 
   def assign_name(colour, other_name)

@@ -14,11 +14,18 @@ class Chess
     @white = white
     @black = black
     @move_history = move_history
+    @ui = UI.new
     @current_player = @white
   end
 
   def play
     display_turn
     display
+    move = @ui.player_input
+    loop do
+      break if @board.valid_move?(move)
+
+      move = @ui.player_input
+    end
   end
 end
