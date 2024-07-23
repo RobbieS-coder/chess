@@ -6,14 +6,19 @@ require_relative 'pieces/knight'
 require_relative 'pieces/pawn'
 require_relative 'pieces/queen'
 require_relative 'pieces/rook'
+require_relative 'notation_parser'
 
 # Holds game board and interfaces with pieces
 class Board
+  include NotationParser
+
   def initialize
     @game_board = assign_board
   end
 
-  def valid_move?(move); end
+  def valid_move?(move)
+    parsed_move = parse_move(move)
+  end
 
   def symbol_board
     @game_board.map { |row| row.map { |square| square.nil? ? ' ' : square.symbol } }
