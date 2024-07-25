@@ -6,6 +6,10 @@ class Piece
     @colour = colour
   end
 
+  def valid_standard_movement?(from, to, board)
+    possible_destinations(from).contains?(to) && unblocked_path?(from, to, board)
+  end
+
   private
 
   def unicode_symbol(white_symbol, black_symbol)

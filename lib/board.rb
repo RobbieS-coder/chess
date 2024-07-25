@@ -18,6 +18,10 @@ class Board
 
   def valid_move?(move)
     parsed_move = parse_move(move)
+    from, to = parsed_move.values_at(:from, :to)
+    from_piece = @game_board[from.first][from.last]
+    return false if from_piece.nil?
+    return false unless from_piece.valid_standard_movement?(from, to, @game_board.dup) # rubocop:disable Style/RedundantReturn
   end
 
   def symbol_board
