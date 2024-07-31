@@ -30,6 +30,11 @@ class Chess
         move = @ui.player_input
       end
       @board.update_board(move)
+      switch_player
     end
+  end
+
+  def switch_player
+    @current_player = @current_player == @white ? @black : @white
   end
 end
