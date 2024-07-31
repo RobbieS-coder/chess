@@ -17,12 +17,23 @@ class Board
   end
 
   def valid_move?(move, colour)
-    parsed_move = parse_move(move)
+    parsed_move = parse_move(move.dup)
     from, to = parsed_move.values_at(:from, :to)
     from_piece = @game_board[from.first][from.last]
     return false if from_piece.nil?
     return false unless from_piece.colour == colour
-    return false unless from_piece.valid_standard_movement?([from, to], abbrev_board, parsed_move[:captured]) # rubocop:disable Style/RedundantReturn
+    return false unless from_piece.valid_standard_movement?([from, to], abbrev_board, parsed_move[:captured])
+
+    true
+  end
+
+  def update_board(move)
+    parsed_move = parse_move(move.dup)
+    from, to = parsed_move.values_at(:from, :to)
+    from_rank, from_file = from
+    to_rank, to_file = to
+    @game_board[to_rank][to_file] = @game_board[from_rank][from_file]
+    @game_board[from_rank][from_file] = nil
   end
 
   def symbol_board

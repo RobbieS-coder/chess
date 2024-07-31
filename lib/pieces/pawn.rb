@@ -24,7 +24,7 @@ class Pawn < Piece
     from, to = squares
     rank, file = from
     destinations = []
-    destinations << [[rank + @direction, file + 1], [rank + @direction, file - 1]] if captured
+    destinations += [[rank + @direction, file + 1], [rank + @direction, file - 1]] if captured
     destinations << [rank + @direction, file] unless captured
     destinations << [rank + 2 * @direction, file] if rank == @start_rank
     destinations.include?(to)

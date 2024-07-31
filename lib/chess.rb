@@ -19,13 +19,17 @@ class Chess
   end
 
   def play
-    display_turn
-    display
-    move = @ui.player_input
     loop do
-      break if @board.valid_move?(move, @current_player.colour)
-
+      display_turn
+      display
       move = @ui.player_input
+      loop do
+        break if @board.valid_move?(move, @current_player.colour)
+
+        puts 'Invalid move'
+        move = @ui.player_input
+      end
+      @board.update_board(move)
     end
   end
 end

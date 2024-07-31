@@ -11,7 +11,7 @@ class Piece
   def valid_standard_movement?(squares, board, captured)
     valid_move = in_possible_destinations?(squares, captured)
     valid_path = unblocked_path?(squares, board, captured) if [Bishop, Rook, Queen, Pawn].any? { |cl| instance_of?(cl) }
-    puts "#{valid_move} #{valid_path}"
+    valid_path ||= true
     valid_move && valid_path
   end
 
