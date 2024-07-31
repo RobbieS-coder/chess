@@ -9,15 +9,16 @@ class Piece
   end
 
   def valid_standard_movement?(squares, board, captured)
-    valid_move = in_possible_destinations?(squares, captured)
-    valid_path = self&.unblocked_path?(squares, board)
-    valid_path ||= true
-    valid_move && valid_path
+    in_possible_destinations?(squares, captured) && unblocked_path?(squares, board)
   end
 
   private
 
   def unicode_symbol(white_symbol, black_symbol)
     @colour == 'white' ? white_symbol : black_symbol
+  end
+
+  def unblocked_path?(_squares, _board)
+    true
   end
 end
