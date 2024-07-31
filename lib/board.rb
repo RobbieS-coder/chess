@@ -18,11 +18,12 @@ class Board
 
   def valid_move?(move, colour)
     parsed_move = parse_move(move.dup)
-    from, to = parsed_move.values_at(:from, :to)
+    from, to, captured = parsed_move.values_at(:from, :to, :captured)
     from_piece = @game_board[from.first][from.last]
-    return false if from_piece.nil?
-    return false unless from_piece.colour == colour
-    return false unless from_piece.valid_standard_movement?([from, to], abbrev_board, parsed_move[:captured])
+    to_piece = @game_board[to.first][to.last]
+    return false if from_piece.nil? || from_piece.colour != colour
+    return false if to_piece && (to_piece.abbrev != captured || to_piece.colour == colour)
+    return false unless from_piece.valid_standard_movement?([from, to], abbrev_board, captured)
 
     true
   end

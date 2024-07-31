@@ -30,12 +30,12 @@ class Pawn < Piece
     destinations.include?(to)
   end
 
-  def unblocked_path?(squares, board, captured)
+  def unblocked_path?(squares, board)
     from, to = squares
     from_rank, from_file = from
-    to_rank, to_file = to
+    to_rank = to.first
     travelled_squares = []
     travelled_squares << board[from_rank + @direction][from_file] if (to_rank - from_rank).abs == 2
-    travelled_squares.all?(&:nil?) && board[to_rank][to_file] == captured
+    travelled_squares.all?(&:nil?)
   end
 end
