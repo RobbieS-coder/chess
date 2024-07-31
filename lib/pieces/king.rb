@@ -7,4 +7,8 @@ class King < Piece
   def symbol
     unicode_symbol("\u265a", "\u2654")
   end
+
+  def abbrev
+    'k'
+  end
 end

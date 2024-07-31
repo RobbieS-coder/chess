@@ -16,12 +16,13 @@ class Board
     @game_board = assign_board
   end
 
-  def valid_move?(move)
+  def valid_move?(move, colour)
     parsed_move = parse_move(move)
     from, to = parsed_move.values_at(:from, :to)
     from_piece = @game_board[from.first][from.last]
     return false if from_piece.nil?
-    return false unless from_piece.valid_standard_movement?(from, to, @game_board.dup) # rubocop:disable Style/RedundantReturn
+    return false unless from_piece.colour == colour
+    return false unless from_piece.valid_standard_movement?([from, to], abbrev_board, parsed_move[:captured]) # rubocop:disable Style/RedundantReturn
   end
 
   def symbol_board
@@ -43,5 +44,9 @@ class Board
 
   def pawn_row(colour)
     Array.new(8) { Pawn.new(colour) }
+  end
+
+  def abbrev_board
+    @game_board.map { |row| row.map { |square| square&.abbrev } }
   end
 end

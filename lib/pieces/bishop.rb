@@ -7,4 +7,8 @@ class Bishop < Piece
   def symbol
     unicode_symbol("\u265d", "\u2657")
   end
+
+  def abbrev
+    'b'
+  end
 end

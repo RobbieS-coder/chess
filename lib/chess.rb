@@ -23,7 +23,7 @@ class Chess
     display
     move = @ui.player_input
     loop do
-      break if @board.valid_move?(move)
+      break if @board.valid_move?(move, @current_player.colour)
 
       move = @ui.player_input
     end

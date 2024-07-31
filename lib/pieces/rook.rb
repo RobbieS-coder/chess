@@ -7,4 +7,8 @@ class Rook < Piece
   def symbol
     unicode_symbol("\u265c", "\u2656")
   end
+
+  def abbrev
+    'r'
+  end
 end

@@ -7,4 +7,8 @@ class Queen < Piece
   def symbol
     unicode_symbol("\u265b", "\u2655")
   end
+
+  def abbrev
+    'q'
+  end
 end
