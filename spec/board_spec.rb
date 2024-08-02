@@ -4,68 +4,115 @@ require_relative '../lib/board'
 
 describe Board do
   describe '#valid_move?' do
-    context 'when moving pawn into occupied square' do
+    subject(:board) { described_class.new }
+
+    context 'when moving pawn into occupied square of other colour' do
+      before do
+        setup_moves = %w[e2e4 e7e5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.valid_move?('e4e5', 'white')).to be(false)
+      end
+    end
+
+    context 'when moving pawn into occupied square of same colour' do
+      before do
+        setup_moves = %w[e2e4 d7d5 e4d5p a7a6 d2d4 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.valid_move?('d4d5', 'white')).to be(false)
+      end
+    end
+
+    context 'when moving knight into occupied square of same colour' do
       xit 'returns false' do
       end
     end
 
-    context 'when moving knight into occupied square' do
+    context 'when moving bishop into occupied square of same colour' do
       xit 'returns false' do
       end
     end
 
-    context 'when moving bishop into occupied square' do
+    context 'when moving rook into occupied square of same colour' do
       xit 'returns false' do
       end
     end
 
-    context 'when moving rook into occupied square' do
+    context 'when moving queen into occupied square of same colour' do
       xit 'returns false' do
       end
     end
 
-    context 'when moving queen into occupied square' do
-      xit 'returns false' do
-      end
-    end
-
-    context 'when moving king into occupied square' do
-      xit 'returns false' do
+    context 'when moving king into occupied square of same colour' do
+      it 'returns false' do
+        expect(board.valid_move?('e1e2', 'white')).to be(false)
       end
     end
 
     context 'when moving pawn two squares from starting rank without blocked path' do
-      xit 'returns true' do
+      it 'returns true' do
+        expect(board.valid_move?('e2e4', 'white')).to be(true)
       end
     end
 
     context 'when moving pawn two squares from starting rank with blocked path' do
-      xit 'returns false' do
+      before do
+        setup_moves = %w[a2a3 e7e5 a3a4 e5e4 a4a5 e4e3]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.valid_move?('e2e4', 'white')).to be(false)
       end
     end
 
     context 'when moving pawn one square from starting rank' do
-      xit 'returns true' do
+      it 'returns true' do
+        expect(board.valid_move?('e2e3', 'white')).to be(true)
       end
     end
 
     context 'when moving pawn two squares from random rank' do
-      xit 'returns false' do
+      before do
+        setup_moves = %w[e2e4 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.valid_move?('e4e6', 'white')).to be(false)
       end
     end
 
     context 'when moving pawn one square from random rank' do
-      xit 'returns true' do
+      before do
+        setup_moves = %w[e2e4 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('e4e5', 'white')).to be(true)
       end
     end
 
     context 'when moving pawn diagonally to take a piece' do
-      xit 'returns true' do
+      before do
+        setup_moves = %w[e2e4 d7d5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('e4d5p', 'white')).to be(true)
       end
     end
 
     context 'when moving pawn diagonally without taking a piece' do
-      xit 'returns false' do
+      it 'returns false' do
+        expect(board.valid_move?('e2d3', 'white')).to be(false)
       end
     end
 
@@ -76,6 +123,11 @@ describe Board do
 
     context 'when moving knight two squares' do
       xit 'returns false' do
+      end
+    end
+
+    context 'when moving knight to take piece' do
+      xit 'returns true' do
       end
     end
 
@@ -96,6 +148,11 @@ describe Board do
 
     context 'when moving bishop horizontally' do
       xit 'returns false' do
+      end
+    end
+
+    context 'when moving bishop to take piece' do
+      xit 'returns true' do
       end
     end
 
@@ -121,6 +178,11 @@ describe Board do
 
     context 'when moving rook diagonally' do
       xit 'returns false' do
+      end
+    end
+
+    context 'when moving rook to take piece' do
+      xit 'returns true' do
       end
     end
 
@@ -159,23 +221,63 @@ describe Board do
       end
     end
 
-    context 'when moving king vertically one square' do
+    context 'when moving queen to take piece' do
       xit 'returns true' do
+      end
+    end
+
+    context 'when moving king vertically one square' do
+      before do
+        setup_moves = %w[e2e4 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('e1e2', 'white')).to be(true)
       end
     end
 
     context 'when moving king horizontally one square' do
-      xit 'returns true' do
+      before do
+        setup_moves = %w[e2e4 a7a6 e1e2 a6a5 e2e3 a5a4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('e3d3', 'white')).to be(true)
       end
     end
 
     context 'when moving king diagonally one square' do
-      xit 'returns true' do
+      before do
+        setup_moves = %w[e2e4 a7a6 e1e2 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('e2d3', 'white')).to be(true)
       end
     end
 
     context 'when moving king two squares' do
-      xit 'returns false' do
+      before do
+        setup_moves = %w[e2e4 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.valid_move?('e1e3', 'white')).to be(false)
+      end
+    end
+
+    context 'when moving king to take piece' do
+      before do
+        setup_moves = %w[e2e4 d7d5 e1e2 d5d4 e2e3 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('e3d4p', 'white')).to be(true)
       end
     end
   end
