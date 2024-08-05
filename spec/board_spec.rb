@@ -35,7 +35,7 @@ describe Board do
     end
 
     context 'when moving bishop into occupied square of same colour' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('f1e2', 'white')).to be(false)
       end
     end
@@ -182,13 +182,13 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('f1c4', 'white')).to be(true)
       end
     end
 
     context 'when moving bishop diagonally with blocked path' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('f1c4', 'white')).to be(false)
       end
     end
@@ -199,7 +199,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('f1f3', 'white')).to be(false)
       end
     end
@@ -210,7 +210,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('f1g1', 'white')).to be(false)
       end
     end
@@ -221,7 +221,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('f1b5p', 'white')).to be(true)
       end
     end
