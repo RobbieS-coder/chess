@@ -29,7 +29,7 @@ describe Board do
     end
 
     context 'when moving knight into occupied square of same colour' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('g1e2', 'white')).to be(false)
       end
     end
@@ -121,7 +121,7 @@ describe Board do
     end
 
     context 'when moving knight two up then one across' do
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('g1f3', 'white')).to be(true)
       end
     end
@@ -132,7 +132,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('f3d4', 'white')).to be(true)
       end
     end
@@ -143,7 +143,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('f3g1', 'white')).to be(true)
       end
     end
@@ -154,13 +154,13 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('d4f3', 'white')).to be(true)
       end
     end
 
     context 'when moving knight two squares' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('g1g3', 'white')).to be(false)
       end
     end
@@ -171,7 +171,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('f3e5p', 'white')).to be(true)
       end
     end

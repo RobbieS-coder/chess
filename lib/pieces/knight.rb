@@ -11,4 +11,17 @@ class Knight < Piece
   def abbrev
     'n'
   end
+
+  private
+
+  def in_possible_destinations?(squares, _captured)
+    from, to = squares
+    rank, file = from
+    offsets = [
+      [2, 1], [2, -1], [-2, 1], [-2, -1],
+      [1, 2], [1, -2], [-1, 2], [-1, -2]
+    ]
+    destinations = offsets.map { |rank_change, file_change| [rank + rank_change, file + file_change] }
+    destinations.include?(to)
+  end
 end
