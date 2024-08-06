@@ -27,10 +27,6 @@ class Bishop < Piece
 
   def unblocked_path?(squares, board)
     from, to = squares
-    from_rank, from_file = from
-    to_rank, to_file = to
-    rank_stp = to_rank > from_rank ? 1 : -1
-    file_stp = to_file > from_file ? 1 : -1
-    (1...((to_rank - from_rank).abs)).all? { |stp| board[from_rank + stp * rank_stp][from_file + stp * file_stp].nil? }
+    diagonal_unblocked_path?(from, to, board)
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/board'
+require 'pry-byebug'
 
 describe Board do
   describe '#valid_move?' do
@@ -47,7 +48,7 @@ describe Board do
     end
 
     context 'when moving queen into occupied square of same colour' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('d1d2', 'white')).to be(false)
       end
     end
@@ -293,14 +294,14 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('d1d3', 'white')).to be(true)
       end
     end
 
     context 'when moving queen vertically with blocked path' do
-      xit 'returns true' do
-        expect(board.valid_move?('d1d3', 'white')).to be(true)
+      it 'returns false' do
+        expect(board.valid_move?('d1d3', 'white')).to be(false)
       end
     end
 
@@ -310,7 +311,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('d3h3', 'white')).to be(true)
       end
     end
@@ -321,8 +322,8 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
-        expect(board.valid_move?('d1b1', 'white')).to be(true)
+      it 'returns false' do
+        expect(board.valid_move?('d1b1', 'white')).to be(false)
       end
     end
 
@@ -332,19 +333,19 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('d1f3', 'white')).to be(true)
       end
     end
 
     context 'when moving queen diagonally with blocked path' do
-      xit 'returns true' do
-        expect(board.valid_move?('d1f3', 'white')).to be(true)
+      it 'returns false' do
+        expect(board.valid_move?('d1f3', 'white')).to be(false)
       end
     end
 
     context 'when moving queen like a knight' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('d1e3', 'white')).to be(false)
       end
     end
@@ -355,7 +356,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('d1d5p', 'white')).to be(true)
       end
     end

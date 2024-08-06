@@ -27,13 +27,6 @@ class Rook < Piece
 
   def unblocked_path?(squares, board)
     from, to = squares
-    from_rank, from_file = from
-    to_rank, to_file = to
-
-    if from_rank == to_rank
-      (([from_file, to_file].min + 1)...[from_file, to_file].max).all? { |file| board[from_rank][file].nil? }
-    else
-      (([from_rank, to_rank].min + 1)...[from_rank, to_rank].max).all? { |rank| board[rank][from_file].nil? }
-    end
+    vert_hor_unblocked_path?(from, to, board)
   end
 end
