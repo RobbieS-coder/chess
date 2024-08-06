@@ -41,7 +41,7 @@ describe Board do
     end
 
     context 'when moving rook into occupied square of same colour' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('h1h2', 'white')).to be(false)
       end
     end
@@ -232,13 +232,13 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('h1h3', 'white')).to be(true)
       end
     end
 
     context 'when moving rook vertically with blocked path' do
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('h1h3', 'white')).to be(false)
       end
     end
@@ -249,7 +249,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('h1g1', 'white')).to be(true)
       end
     end
@@ -260,7 +260,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('h1b1', 'white')).to be(false)
       end
     end
@@ -271,7 +271,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns false' do
+      it 'returns false' do
         expect(board.valid_move?('h1e4', 'white')).to be(false)
       end
     end
@@ -282,7 +282,7 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         expect(board.valid_move?('h1h5p', 'white')).to be(true)
       end
     end
