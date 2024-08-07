@@ -22,6 +22,16 @@ class Piece
     true
   end
 
+  def straight_line_in_possible_destinations?(squares, directions)
+    from, to = squares
+    rank, file = from
+    destinations = directions.flat_map do |rank_change, file_change|
+      (1..7).map { |i| [rank + i * rank_change, file + i * file_change] }
+            .take_while { |new_rank, new_file| new_rank.between?(0, 7) && new_file.between?(0, 7) }
+    end
+    destinations.include?(to)
+  end
+
   def diagonal_unblocked_path?(from, to, board)
     from_rank, from_file = from
     to_rank, to_file = to
