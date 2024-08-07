@@ -12,16 +12,10 @@ class Knight < Piece
     'n'
   end
 
-  private
-
-  def in_possible_destinations?(squares, _captured)
-    from, to = squares
+  def possible_destinations(from, _board, _captured)
     rank, file = from
-    offsets = [
-      [2, 1], [2, -1], [-2, 1], [-2, -1],
-      [1, 2], [1, -2], [-1, 2], [-1, -2]
-    ]
+    offsets = [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]]
     destinations = offsets.map { |rank_change, file_change| [rank + rank_change, file + file_change] }
-    destinations.include?(to)
+    destinations.filter { |new_rank, new_file| new_rank.between?(0, 7) && new_file.between?(0, 7) }
   end
 end

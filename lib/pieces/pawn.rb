@@ -18,20 +18,18 @@ class Pawn < Piece
     'p'
   end
 
-  private
-
-  def in_possible_destinations?(squares, captured)
-    from, to = squares
+  def possible_destinations(from, board, captured)
     rank, file = from
     destinations = []
     destinations += [[rank + @direction, file + 1], [rank + @direction, file - 1]] if captured
     destinations << [rank + @direction, file] unless captured
     destinations << [rank + 2 * @direction, file] if rank == @start_rank
-    destinations.include?(to)
+    destinations.filter { |destination| unblocked_path?(from, destination, board) }
   end
 
-  def unblocked_path?(squares, board)
-    from, to = squares
+  private
+
+  def unblocked_path?(from, to, board)
     from_rank, from_file = from
     to_rank = to.first
     travelled_squares = []

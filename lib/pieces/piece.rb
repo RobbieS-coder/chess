@@ -8,8 +8,9 @@ class Piece
     @colour = colour
   end
 
-  def valid_standard_movement?(squares, board, captured)
-    in_possible_destinations?(squares, captured) && unblocked_path?(squares, board)
+  def in_possible_destinations?(squares, board, captured)
+    from, to = squares
+    possible_destinations(from, board, captured).include?(to)
   end
 
   private
@@ -18,18 +19,12 @@ class Piece
     @colour == 'white' ? white_symbol : black_symbol
   end
 
-  def unblocked_path?(_squares, _board)
-    true
-  end
-
-  def straight_line_in_possible_destinations?(squares, directions)
-    from, to = squares
+  def straight_line_possible_destinations(from, directions)
     rank, file = from
     destinations = directions.flat_map do |rank_change, file_change|
       (1..7).map { |i| [rank + i * rank_change, file + i * file_change] }
-            .take_while { |new_rank, new_file| new_rank.between?(0, 7) && new_file.between?(0, 7) }
     end
-    destinations.include?(to)
+    destinations.filter { |new_rank, new_file| new_rank.between?(0, 7) && new_file.between?(0, 7) }
   end
 
   def diagonal_unblocked_path?(from, to, board)

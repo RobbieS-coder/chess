@@ -12,15 +12,8 @@ class Rook < Piece
     'r'
   end
 
-  private
-
-  def in_possible_destinations?(squares, _captured)
+  def possible_destinations(from, board, _captured)
     directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
-    straight_line_in_possible_destinations?(squares, directions)
-  end
-
-  def unblocked_path?(squares, board)
-    from, to = squares
-    vert_hor_unblocked_path?(from, to, board)
+    straight_line_possible_destinations(from, directions).filter { |dest| vert_hor_unblocked_path?(from, dest, board) }
   end
 end

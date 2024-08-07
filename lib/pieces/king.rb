@@ -12,10 +12,7 @@ class King < Piece
     'k'
   end
 
-  private
-
-  def in_possible_destinations?(squares, _captured)
-    from, to = squares
+  def possible_destinations(from, _board, _captured)
     rank, file = from
     destinations = []
     (-1..1).each do |rank_change|
@@ -25,6 +22,6 @@ class King < Piece
         destinations << [rank + rank_change, file + file_change]
       end
     end
-    destinations.include?(to)
+    destinations.filter { |new_rank, new_file| new_rank.between?(0, 7) && new_file.between?(0, 7) }
   end
 end

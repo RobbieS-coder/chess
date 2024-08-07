@@ -12,15 +12,14 @@ class Queen < Piece
     'q'
   end
 
-  private
-
-  def in_possible_destinations?(squares, _captured)
+  def possible_destinations(from, board, _captured)
     directions = [[1, 1], [1, -1], [-1, 1], [-1, -1], [0, 1], [0, -1], [1, 0], [-1, 0]]
-    straight_line_in_possible_destinations?(squares, directions)
+    straight_line_possible_destinations(from, directions).filter { |dest| unblocked_path?(from, dest, board) }
   end
 
-  def unblocked_path?(squares, board)
-    from, to = squares
+  private
+
+  def unblocked_path?(from, to, board)
     from_rank, from_file = from
     to_rank, to_file = to
 

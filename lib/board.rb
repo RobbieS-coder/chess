@@ -23,7 +23,7 @@ class Board
     to_piece = @game_board[to.first][to.last]
     return false if from_piece.nil? || from_piece.colour != colour
     return false if to_piece && (to_piece.abbrev != captured || to_piece.colour == colour)
-    return false unless from_piece.valid_standard_movement?([from, to], abbrev_board, captured)
+    return false unless from_piece.in_possible_destinations?([from, to], abbrev_board, captured)
 
     true
   end
