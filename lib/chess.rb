@@ -30,6 +30,7 @@ class Chess
         move = @ui.player_input
       end
       @board.update_board(move)
+      @move_history.add_move(move)
       switch_player
     end
   end
