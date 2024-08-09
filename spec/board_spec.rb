@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 require_relative '../lib/board'
-require 'pry-byebug'
 
 describe Board do
-  describe '#valid_move?' do
-    subject(:board) { described_class.new }
+  subject(:board) { described_class.new }
 
+  describe '#valid_move?' do
     context 'when moving pawn into occupied square of other colour' do
       before do
         setup_moves = %w[e2e4 e7e5]
@@ -413,6 +412,80 @@ describe Board do
 
       it 'returns true' do
         expect(board.valid_move?('e3d4p', 'white')).to be(true)
+      end
+    end
+  end
+
+  describe '#in_check?' do
+    context 'when the king is not in check' do
+      it 'returns false' do
+        expect(board.in_check?('black')).to be(false)
+      end
+    end
+
+    context 'when the king can be moved into by a pawn' do
+      before do
+        setup_moves = %w[d2d4 e7e5 d4e5p e8e7 e5e6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.in_check?('black')).to be(false)
+      end
+    end
+
+    context 'when the king is in check by a pawn' do
+      before do
+        setup_moves = %w[e2e4 d7d5 e4d5p e7e6 a2a3 e8e7 d5d6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('black')).to be(true)
+      end
+    end
+
+    context 'when the king is in check by a knight' do
+      before do
+        setup_moves = %w[g1f3 f7f6 a2a3 e8f7 f3g5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('black')).to be(true)
+      end
+    end
+
+    context 'when the king is in check by a bishop' do
+      before do
+        setup_moves = %w[e2e4 d7d5 f1b5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('black')).to be(true)
+      end
+    end
+
+    context 'when the king is in check by a rook' do
+      before do
+        setup_moves = %w[h2h4 e7e5 h1h3 a7a6 h3e3 a6a5 e3e5p]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('black')).to be(true)
+      end
+    end
+
+    context 'when the king is in check by a queen' do
+      before do
+        setup_moves = %w[e2e4 f7f5 d1h5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('black')).to be(true)
       end
     end
   end

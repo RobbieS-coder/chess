@@ -7,12 +7,16 @@ require_relative 'pieces/pawn'
 require_relative 'pieces/queen'
 require_relative 'pieces/rook'
 require_relative 'notation_parser'
+require_relative 'game_rules'
 
 # Holds game board and interfaces with pieces
 class Board
   include NotationParser
+  include GameRules
 
   def initialize
+    @white_king = King.new('white')
+    @black_king = King.new('black')
     @game_board = assign_board
   end
 
@@ -20,9 +24,7 @@ class Board
     parsed_move = parse_move(move.dup)
     from, to, captured = parsed_move.values_at(:from, :to, :captured)
     from_piece = @game_board[from.first][from.last]
-    to_piece = @game_board[to.first][to.last]
-    return false if from_piece.nil? || from_piece.colour != colour
-    return false if to_piece && (to_piece.abbrev != captured || to_piece.colour == colour)
+    return false unless preliminary_checks([from, to], colour, captured)
     return false unless from_piece.in_possible_destinations?([from, to], abbrev_board, captured)
 
     true
@@ -51,7 +53,7 @@ class Board
 
   def back_row(colour)
     [Rook.new(colour), Knight.new(colour), Bishop.new(colour), Queen.new(colour),
-     King.new(colour), Bishop.new(colour), Knight.new(colour), Rook.new(colour)]
+     colour == 'white' ? @white_king : @black_king, Bishop.new(colour), Knight.new(colour), Rook.new(colour)]
   end
 
   def pawn_row(colour)
@@ -60,5 +62,15 @@ class Board
 
   def abbrev_board
     @game_board.map { |row| row.map { |square| square&.abbrev } }
+  end
+
+  def preliminary_checks(squares, colour, captured)
+    from, to = squares
+    from_piece = @game_board[from.first][from.last]
+    to_piece = @game_board[to.first][to.last]
+    return false if from_piece.nil? || from_piece.colour != colour
+    return false if to_piece && (to_piece.abbrev != captured || to_piece.colour == colour)
+
+    true
   end
 end

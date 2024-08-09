@@ -43,11 +43,12 @@ module Displayable
     moves = @move_history.recent_moves
     colour = @current_player.colour
     current_colour = moves.length.even? ? colour : switch_colour(colour)
-    puts (moves.map do |move|
-      coloured_move = "#{current_colour == 'white' ? "\e[48;5;15m" : "\e[48;5;16m"}#{move}\e[0m"
+    moves_str = (moves.map do |move|
+      coloured_move = "#{current_colour == 'white' ? "\e[48;5;15m\e[30m" : "\e[48;5;16m\e[37m"}#{move}\e[0m"
       current_colour = switch_colour(current_colour)
       coloured_move
-    end).join(', ')
+    end).join(' ')
+    puts "  #{moves_str}"
   end
 
   def switch_colour(colour)
