@@ -2,14 +2,17 @@
 
 # Contains methods that regulate the game's rules
 module GameRules
-  def in_check?(colour)
+  def in_check?(colour, board = @game_board)
     king = (colour == 'white' ? @white_king : @black_king)
-    all_possible_destinations(colour).any? { |rank, file| @game_board[rank][file] == king }
+    all_possible_destinations(colour).any? { |rank, file| board[rank][file] == king }
   end
 
   private
 
-  def legal_move?(before_board, after_board); end
+  def legal_move?(boards, colour, captured)
+    before_board, after_board = boards
+    return false if in_check?(colour, after_board) # rubocop:disable Style/RedundantReturn
+  end
 
   def all_possible_destinations(colour)
     all_possible_destinations = []

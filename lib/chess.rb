@@ -22,6 +22,7 @@ class Chess
     loop do
       display_turn
       display
+      puts 'Check!' if @board.in_check?(@current_player.colour)
       move = @ui.player_input
       loop do
         break if @board.valid_move?(move, @current_player.colour)
