@@ -495,8 +495,8 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      it 'returns true' do
-        expect(board.in_check?('white')).to be(true)
+      it 'returns false' do
+        expect(board.in_check?('white')).to be(false)
       end
     end
 
@@ -578,8 +578,8 @@ describe Board do
         setup_moves.each { |move| board.update_board(move) }
       end
 
-      it 'returns true' do
-        expect(board.in_check?('black')).to be(true)
+      it 'returns false' do
+        expect(board.in_check?('black')).to be(false)
       end
     end
   end
