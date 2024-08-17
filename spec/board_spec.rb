@@ -417,13 +417,96 @@ describe Board do
   end
 
   describe '#in_check?' do
-    context 'when the king is not in check' do
+    context 'when white king is not in check' do
+      it 'returns false' do
+        expect(board.in_check?('white')).to be(false)
+      end
+    end
+
+    context 'when white king can be moved into by a pawn' do
+      before do
+        setup_moves = %w[e2e4 d7d5 e1e2 d5e4p a2a3 e4e3]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.in_check?('white')).to be(false)
+      end
+    end
+
+    context 'when white king is in check by a pawn' do
+      before do
+        setup_moves = %w[e2e4 d7d5 e1e2 a7a6 e2d3 d5e4p]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('white')).to be(true)
+      end
+    end
+
+    context 'when white king is in check by a knight' do
+      before do
+        setup_moves = %w[f2f3 g8f6 e1f2 f6e4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('white')).to be(true)
+      end
+    end
+
+    context 'when white king is in check by a bishop' do
+      before do
+        setup_moves = %w[d2d4 e7e5 f8b4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('white')).to be(true)
+      end
+    end
+
+    context 'when white king is in check by a rook' do
+      before do
+        setup_moves = %w[e2e4 h7h5 e4e5 h8h6 e5e6 h6e6p]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('white')).to be(true)
+      end
+    end
+
+    context 'when white king is in check by a queen' do
+      before do
+        setup_moves = %w[d2d4 c7c5 a2a3 d8a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('white')).to be(true)
+      end
+    end
+
+    context 'when taking piece that is targeting white king' do
+      before do
+        setup_moves = %w[e2e4 d7d5 e1e2 d5d4 a2a3 d4d3 c2d3p]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('white')).to be(true)
+      end
+    end
+
+    context 'when black king is not in check' do
       it 'returns false' do
         expect(board.in_check?('black')).to be(false)
       end
     end
 
-    context 'when the king can be moved into by a pawn' do
+    context 'when black king can be moved into by a pawn' do
       before do
         setup_moves = %w[d2d4 e7e5 d4e5p e8e7 e5e6]
         setup_moves.each { |move| board.update_board(move) }
@@ -434,7 +517,7 @@ describe Board do
       end
     end
 
-    context 'when the king is in check by a pawn' do
+    context 'when black king is in check by a pawn' do
       before do
         setup_moves = %w[e2e4 d7d5 e4d5p e7e6 a2a3 e8e7 d5d6]
         setup_moves.each { |move| board.update_board(move) }
@@ -445,7 +528,7 @@ describe Board do
       end
     end
 
-    context 'when the king is in check by a knight' do
+    context 'when black king is in check by a knight' do
       before do
         setup_moves = %w[g1f3 f7f6 a2a3 e8f7 f3g5]
         setup_moves.each { |move| board.update_board(move) }
@@ -456,7 +539,7 @@ describe Board do
       end
     end
 
-    context 'when the king is in check by a bishop' do
+    context 'when black king is in check by a bishop' do
       before do
         setup_moves = %w[e2e4 d7d5 f1b5]
         setup_moves.each { |move| board.update_board(move) }
@@ -467,7 +550,7 @@ describe Board do
       end
     end
 
-    context 'when the king is in check by a rook' do
+    context 'when black king is in check by a rook' do
       before do
         setup_moves = %w[h2h4 e7e5 h1h3 a7a6 h3e3 a6a5 e3e5p]
         setup_moves.each { |move| board.update_board(move) }
@@ -478,9 +561,20 @@ describe Board do
       end
     end
 
-    context 'when the king is in check by a queen' do
+    context 'when black king is in check by a queen' do
       before do
         setup_moves = %w[e2e4 f7f5 d1h5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.in_check?('black')).to be(true)
+      end
+    end
+
+    context 'when taking piece that is targeting black king' do
+      before do
+        setup_moves = %w[e2e4 d7d5 a2a3 a7a6 f1b5 a6b5p]
         setup_moves.each { |move| board.update_board(move) }
       end
 
