@@ -29,9 +29,12 @@ class Chess
   def valid_player_input
     loop do
       move = @ui.player_input
-      return move if @board.valid_move?(move, @current_player.colour)
 
-      puts 'Invalid move'
+      case @board.valid_move?(move, @current_player.colour)
+      when true then return move
+      when false then puts 'Invalid move'
+      when nil then puts 'Illegal move'
+      end
     end
   end
 

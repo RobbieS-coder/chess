@@ -458,7 +458,7 @@ describe Board do
 
     context 'when white king is in check by a bishop' do
       before do
-        setup_moves = %w[d2d4 e7e5 f8b4]
+        setup_moves = %w[d2d4 e7e5 a2a3 f8b4]
         setup_moves.each { |move| board.update_board(move) }
       end
 
