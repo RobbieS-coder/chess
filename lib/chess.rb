@@ -20,20 +20,24 @@ class Chess
 
   def play
     loop do
-      display_turn
       display
-      puts 'Check!' if @board.in_check?(@current_player.colour)
-      move = @ui.player_input
-      loop do
-        break if @board.valid_move?(move, @current_player.colour)
-
-        puts 'Invalid move'
-        move = @ui.player_input
-      end
-      @board.update_board(move)
-      @move_history.add_move(move)
+      handle_move(valid_player_input)
       switch_player
     end
+  end
+
+  def valid_player_input
+    loop do
+      move = @ui.player_input
+      return move if @board.valid_move?(move, @current_player.colour)
+
+      puts 'Invalid move'
+    end
+  end
+
+  def handle_move(move)
+    @board.update_board(move)
+    @move_history.add_move(move)
   end
 
   def switch_player

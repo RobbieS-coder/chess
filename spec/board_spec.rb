@@ -406,12 +406,12 @@ describe Board do
 
     context 'when moving king to take piece' do
       before do
-        setup_moves = %w[e2e4 d7d5 e1e2 d5d4 e2e3 a7a6]
+        setup_moves = %w[d2d4 e7e5 e1d2 e5e4 a2a3 e4e3]
         setup_moves.each { |move| board.update_board(move) }
       end
 
       it 'returns true' do
-        expect(board.valid_move?('e3d4p', 'white')).to be(true)
+        expect(board.valid_move?('d2e3p', 'white')).to be(true)
       end
     end
   end

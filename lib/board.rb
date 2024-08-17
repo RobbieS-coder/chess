@@ -26,17 +26,18 @@ class Board
     from_piece = @game_board[from.first][from.last]
     return false unless preliminary_checks([from, to], colour, captured)
     return false unless from_piece.in_possible_destinations?([from, to], abbrev_board, captured)
+    return false unless legal_move?(temp_board(move), colour, captured)
 
     true
   end
 
-  def update_board(move)
+  def update_board(move, board = @game_board)
     parsed_move = parse_move(move.dup)
     from, to = parsed_move.values_at(:from, :to)
     from_rank, from_file = from
     to_rank, to_file = to
-    @game_board[to_rank][to_file] = @game_board[from_rank][from_file]
-    @game_board[from_rank][from_file] = nil
+    board[to_rank][to_file] = board[from_rank][from_file]
+    board[from_rank][from_file] = nil
   end
 
   def symbol_board
@@ -62,6 +63,12 @@ class Board
 
   def abbrev_board
     @game_board.map { |row| row.map { |square| square&.abbrev } }
+  end
+
+  def temp_board(move)
+    board = @game_board.map(&:dup)
+    update_board(move, board)
+    board
   end
 
   def preliminary_checks(squares, colour, captured)

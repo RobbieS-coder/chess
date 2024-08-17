@@ -4,17 +4,15 @@
 module Displayable
   private
 
-  def display_turn
+  def display
     colour = @current_player.colour
     puts "#{colour == 'white' ? "\e[48;5;15m\e[30m" : "\e[48;5;16m\e[37m"}#{colour.capitalize}'s\e[0m turn"
-  end
-
-  def display
     puts "#{file_indicators}\n"
     display_board
     puts "\n"
     puts file_indicators
     display_recent_moves
+    puts 'Check!' if @board.in_check?(@current_player.colour)
   end
 
   def file_indicators
