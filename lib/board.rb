@@ -22,9 +22,10 @@ class Board
 
   def valid_move?(move, colour)
     parsed_move = parse_move(move.dup)
-    from, to, captured = parsed_move.values_at(:from, :to, :captured)
+    from, to, captured, promoted = parsed_move.values_at(:from, :to, :captured, :promoted)
     from_piece = @game_board[from.first][from.last]
     return false unless preliminary_checks([from, to], colour, captured)
+    return false if promoted && !promotion_checks(from, to)
     return false unless from_piece.in_possible_destinations?([from, to], abbrev_board, captured)
     return unless legal_move?(temp_board(move), colour, captured)
 
@@ -77,6 +78,16 @@ class Board
     to_piece = @game_board[to.first][to.last]
     return false if from_piece.nil? || from_piece.colour != colour
     return false if to_piece && (to_piece.abbrev != captured || to_piece.colour == colour)
+
+    true
+  end
+
+  def promotion_checks(from, to)
+    from_rank, from_file = from
+    to_rank = to.first
+    from_piece = @game_board[from_rank][from_file]
+    return false unless from_piece.instance_of?(Pawn)
+    return false unless [0, 7].include?(to_rank)
 
     true
   end
