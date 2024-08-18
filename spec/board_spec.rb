@@ -414,6 +414,67 @@ describe Board do
         expect(board.valid_move?('d2e3p', 'white')).to be(true)
       end
     end
+
+    context 'when promoting pawn on random rank' do
+      it 'returns false' do
+        expect(board.valid_move?('e2e3Q', 'white')).to be(false)
+      end
+    end
+
+    context 'when taking piece and promoting pawn on random rank' do
+      before do
+        setup_moves = %w[e2e4 d7d5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.valid_move?('e4d5pQ', 'white')).to be(false)
+      end
+    end
+
+    context 'when promoting pawn on last rank' do
+      before do
+        setup_moves = %w[e2e4 f7f5 e4f5p g7g6 f5g6p g8f6 g6g7 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('g7g8Q', 'white')).to be(true)
+      end
+    end
+
+    context 'when taking piece and promoting pawn on last rank' do
+      before do
+        setup_moves = %w[e2e4 f7f5 e4f5p g7g6 f5g6p a7a6 g6g7 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('g7f8bQ', 'white')).to be(true)
+      end
+    end
+
+    context 'when not promoting pawn on last rank' do
+      before do
+        setup_moves = %w[e2e4 f7f5 e4f5p g7g6 f5g6p g8f6 g6g7 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.valid_move?('g7g8', 'white')).to be(false)
+      end
+    end
+
+    context 'when taking piece and not promoting pawn on last rank' do
+      before do
+        setup_moves = %w[e2e4 f7f5 e4f5p g7g6 f5g6p a7a6 g6g7 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns false' do
+        expect(board.valid_move?('g7f8b', 'white')).to be(false)
+      end
+    end
   end
 
   describe '#in_check?' do
