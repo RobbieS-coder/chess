@@ -25,7 +25,7 @@ class Board
     from, to, captured, promoted = parsed_move.values_at(:from, :to, :captured, :promoted)
     from_piece = @game_board[from.first][from.last]
     return false unless preliminary_checks([from, to], colour, captured)
-    return false if promoted && !promotion_checks(from, to)
+    return false unless promotion_checks(from, to, promoted)
     return false unless from_piece.in_possible_destinations?([from, to], abbrev_board, captured)
     return unless legal_move?(temp_board(move), colour, captured)
 
@@ -34,11 +34,12 @@ class Board
 
   def update_board(move, board = @game_board)
     parsed_move = parse_move(move.dup)
-    from, to = parsed_move.values_at(:from, :to)
+    from, to, promoted = parsed_move.values_at(:from, :to, :promoted)
     from_rank, from_file = from
     to_rank, to_file = to
     board[to_rank][to_file] = board[from_rank][from_file]
     board[from_rank][from_file] = nil
+    promote_pawn(to, promoted, board) if promoted
   end
 
   def symbol_board
@@ -82,13 +83,23 @@ class Board
     true
   end
 
-  def promotion_checks(from, to)
-    from_rank, from_file = from
+  def promotion_checks(from, to, promoted)
     to_rank = to.first
-    from_piece = @game_board[from_rank][from_file]
-    return false unless from_piece.instance_of?(Pawn)
-    return false unless [0, 7].include?(to_rank)
+    if promoted
+      from_piece = @game_board[from.first][from.last]
+      return false unless from_piece.instance_of?(Pawn) && [0, 7].include?(to_rank)
+    elsif [0, 7].include?(to_rank)
+      return false
+    end
 
     true
+  end
+
+  def promote_pawn(to, promoted, board)
+    to_rank, to_file = to
+    piece_types = { N: Knight, B: Bishop, R: Rook, Q: Queen }
+    colour = board[to_rank][to_file].colour
+    new_piece = piece_types[promoted.to_sym].new(colour)
+    board[to_rank][to_file] = new_piece
   end
 end
