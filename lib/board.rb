@@ -63,8 +63,8 @@ class Board
     Array.new(8) { Pawn.new(colour) }
   end
 
-  def abbrev_board
-    @game_board.map { |row| row.map { |square| square&.abbrev } }
+  def abbrev_board(board = @game_board)
+    board.map { |row| row.map { |square| square&.abbrev } }
   end
 
   def temp_board(move)

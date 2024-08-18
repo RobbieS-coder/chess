@@ -22,7 +22,7 @@ module GameRules
       row.each_with_index do |piece, file_index|
         next if piece.nil? || piece.colour != colour
 
-        all_possible_destinations += piece.possible_destinations([rank_index, file_index], abbrev_board, 'k')
+        all_possible_destinations += piece.possible_destinations([rank_index, file_index], abbrev_board(board), 'k')
       end
     end
     all_possible_destinations
