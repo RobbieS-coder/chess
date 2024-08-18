@@ -84,11 +84,11 @@ class Board
   end
 
   def promotion_checks(from, to, promoted)
+    from_piece = @game_board[from.first][from.last]
     to_rank = to.first
     if promoted
-      from_piece = @game_board[from.first][from.last]
       return false unless from_piece.instance_of?(Pawn) && [0, 7].include?(to_rank)
-    elsif [0, 7].include?(to_rank)
+    elsif from_piece.instance_of?(Pawn) && [0, 7].include?(to_rank)
       return false
     end
 
