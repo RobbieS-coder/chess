@@ -77,10 +77,20 @@ class Board
     from, to = squares
     from_piece = @game_board[from.first][from.last]
     to_piece = @game_board[to.first][to.last]
-    return false if from_piece.nil? || from_piece.colour != colour
-    return false if to_piece && (to_piece.abbrev != captured || to_piece.colour == colour)
+    return false unless valid_from_piece?(from_piece, colour)
+    return false unless valid_to_piece?(to_piece, captured, colour)
 
     true
+  end
+
+  def valid_from_piece?(from_piece, colour)
+    from_piece && from_piece.colour == colour
+  end
+
+  def valid_to_piece?(to_piece, captured, colour)
+    castling = to_piece.instance_of?(King) && captured&.match?(/cC/)
+    valid_piece = !(to_piece && (to_piece.abbrev != captured || to_piece.colour == colour))
+    castling || valid_piece
   end
 
   def promotion_checks(from, to, promoted)
