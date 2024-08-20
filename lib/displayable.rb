@@ -39,7 +39,7 @@ module Displayable
   end
 
   def display_recent_moves
-    moves = @move_history.recent_moves
+    moves = @board.recent_moves
     colour = @current_player.colour
     current_colour = moves.length.even? ? colour : switch_colour(colour)
     moves_str = (moves.map do |move|

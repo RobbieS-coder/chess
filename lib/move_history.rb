@@ -15,4 +15,13 @@ class MoveHistory
 
     @history
   end
+
+  def castling_pieces_moved?(castling_type, start_rank_index)
+    start_rank = 8 - start_rank_index
+    rook_file = castling_type == 'c' ? 'h' : 'a'
+    king_position = "e#{start_rank}"
+    rook_position = "#{rook_file}#{start_rank}"
+
+    @history.any? { |move| move.start_with?(king_position) || move.start_with?(rook_position) }
+  end
 end

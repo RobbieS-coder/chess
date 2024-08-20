@@ -8,20 +8,22 @@ require_relative 'pieces/queen'
 require_relative 'pieces/rook'
 require_relative 'notation_parser'
 require_relative 'game_rules'
+require_relative 'move_history'
 
 # Holds game board and interfaces with pieces
 class Board
   include NotationParser
   include GameRules
 
-  def initialize
+  def initialize(move_history = MoveHistory.new)
+    @move_history = move_history
     @white_king = King.new('white')
     @black_king = King.new('black')
     @game_board = assign_board
   end
 
   def valid_move?(move, colour)
-    parsed_move = parse_move(move.dup)
+    parsed_move = parse_move(move)
     from, to, captured, promoted = parsed_move.values_at(:from, :to, :captured, :promoted)
     from_piece = @game_board[from.first][from.last]
     return false unless preliminary_checks([from, to], colour, captured)
@@ -33,7 +35,7 @@ class Board
   end
 
   def update_board(move, board = @game_board)
-    parsed_move = parse_move(move.dup)
+    parsed_move = parse_move(move)
     from, to, promoted = parsed_move.values_at(:from, :to, :promoted)
     from_rank, from_file = from
     to_rank, to_file = to
@@ -46,6 +48,14 @@ class Board
     @game_board.map { |row| row.map { |square| square.nil? ? ' ' : square.symbol } }
   end
 
+  def recent_moves
+    @move_history.recent_moves
+  end
+
+  def add_move(move)
+    @move_history.add_move(move)
+  end
+
   private
 
   def assign_board
@@ -56,7 +66,7 @@ class Board
 
   def back_row(colour)
     [Rook.new(colour), Knight.new(colour), Bishop.new(colour), Queen.new(colour),
-     colour == 'white' ? @white_king : @black_king, Bishop.new(colour), Knight.new(colour), Rook.new(colour)]
+     king(colour), Bishop.new(colour), Knight.new(colour), Rook.new(colour)]
   end
 
   def pawn_row(colour)
@@ -67,18 +77,23 @@ class Board
     board.map { |row| row.map { |square| square&.abbrev } }
   end
 
-  def temp_board(move)
+  def temp_board(move = nil)
     board = @game_board.map(&:dup)
-    update_board(move, board)
+    update_board(move, board) if move
     board
+  end
+
+  def king(colour)
+    colour == 'white' ? @white_king : @black_king
   end
 
   def preliminary_checks(squares, colour, captured)
     from, to = squares
     from_piece = @game_board[from.first][from.last]
     to_piece = @game_board[to.first][to.last]
+    castling = from_piece.instance_of?(King) && captured&.match?(/[cC]/)
     return false unless valid_from_piece?(from_piece, colour)
-    return false unless valid_to_piece?(to_piece, captured, colour)
+    return false unless castling || valid_to_piece?(to_piece, captured, colour)
 
     true
   end
@@ -88,9 +103,7 @@ class Board
   end
 
   def valid_to_piece?(to_piece, captured, colour)
-    castling = to_piece.instance_of?(King) && captured&.match?(/cC/)
-    valid_piece = !(to_piece && (to_piece.abbrev != captured || to_piece.colour == colour))
-    castling || valid_piece
+    !(to_piece && (to_piece.abbrev != captured || to_piece.colour == colour))
   end
 
   def promotion_checks(from, to, promoted)

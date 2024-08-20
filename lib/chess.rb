@@ -3,17 +3,15 @@
 require_relative 'board'
 require_relative 'player'
 require_relative 'displayable'
-require_relative 'move_history'
 
 # Contains the loop to play chess and interfaces with all main classes
 class Chess
   include Displayable
 
-  def initialize(white = Player.new('white'), black = Player.new('black', white.name), move_history = MoveHistory.new)
-    @board = Board.new
+  def initialize(white = Player.new('white'), black = Player.new('black', white.name), board = Board.new)
+    @board = board
     @white = white
     @black = black
-    @move_history = move_history
     @ui = UI.new
     @current_player = @white
   end
@@ -40,7 +38,7 @@ class Chess
 
   def handle_move(move)
     @board.update_board(move)
-    @move_history.add_move(move)
+    @board.add_move(move)
   end
 
   def switch_player

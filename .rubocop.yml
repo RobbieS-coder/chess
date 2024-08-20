@@ -1,1 +1,4 @@
 require: rubocop-rspec
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
