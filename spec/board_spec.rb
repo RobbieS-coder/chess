@@ -675,6 +675,94 @@ describe Board do
         expect(board.valid_move?('e1c1C', 'white')).to be_nil
       end
     end
+
+    context 'when taking black double-stepping pawn on left by en passant' do
+      before do
+        setup_moves = %w[e2e4 a7a6 e4e5 d7d5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      xit 'returns true' do
+        expect(board.valid_move?('e5d6E', 'white')).to be(true)
+      end
+    end
+
+    context 'when taking black double-stepping pawn on right by en passant' do
+      before do
+        setup_moves = %w[d2d4 a7a6 d4d5 e7e5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      xit 'returns true' do
+        expect(board.valid_move?('d5e6E', 'white')).to be(true)
+      end
+    end
+
+    context 'when taking a random black adjacent pawn by en passant' do
+      before do
+        setup_moves = %w[e2e4 d7d5 a2a3 d5d4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      xit 'returns nil' do
+        expect(board.valid_move?('e4d5E', 'white')).to be_nil
+      end
+    end
+
+    context 'when waiting one turn to take black double-stepping pawn by en passant' do
+      before do
+        setup_moves = %w[e2e4 a7a6 e4e5 d7d5 a2a3 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      xit 'returns nil' do
+        expect(board.valid_move?('e5d6E', 'white')).to be_nil
+      end
+    end
+
+    context 'when taking white double-stepping pawn on left by en passant' do
+      before do
+        setup_moves = %w[a2a3 e7e5 a3a4 e5e4 d2d4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      xit 'returns true' do
+        expect(board.valid_move?('e4d3E', 'black')).to be(true)
+      end
+    end
+
+    context 'when taking white double-stepping pawn on right by en passant' do
+      before do
+        setup_moves = %w[a2a3 d7d5 a3a4 d5d4 e2e4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      xit 'returns true' do
+        expect(board.valid_move?('d4e3E', 'black')).to be(true)
+      end
+    end
+
+    context 'when taking a random white adjacent pawn by en passant' do
+      before do
+        setup_moves = %w[e2e4 d7d5 e4e5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      xit 'returns nil' do
+        expect(board.valid_move?('d5e4E', 'black')).to be_nil
+      end
+    end
+
+    context 'when waiting one turn to take white double-stepping pawn by en passant' do
+      before do
+        setup_moves = %w[a2a3 d7d5 a3a4 d5d4 e2e4 a7a6 a4a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      xit 'returns nil' do
+        expect(board.valid_move?('d4e3E', 'black')).to be_nil
+      end
+    end
   end
 
   describe '#in_check?' do
