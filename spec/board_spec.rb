@@ -4,7 +4,7 @@ require_relative '../lib/board'
 require_relative '../lib/move_history'
 
 describe Board do
-  subject(:board) { described_class.new(MoveHistory.new) }
+  subject(:board) { described_class.new }
 
   describe '#valid_move?' do
     context 'when moving pawn into occupied square of other colour' do
@@ -474,6 +474,205 @@ describe Board do
 
       it 'returns false' do
         expect(board.valid_move?('g7f8b', 'white')).to be(false)
+      end
+    end
+
+    context 'when short castling with nothing blocking path, no pieces moved and nothing in check' do
+      before do
+        setup_moves = %w[e2e4 e7e5 f1e2 a7a6 g1f3 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('e1g1c', 'white')).to be(true)
+      end
+    end
+
+    context 'when long castling with nothing blocking path, no pieces moved and nothing in check' do
+      before do
+        setup_moves = %w[d7d5 d1d3 a7a6 c1d2 a6a5 b1c3 a5a4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns true' do
+        expect(board.valid_move?('e1c1C', 'white')).to be(true)
+      end
+    end
+
+    context 'when short castling with knight blocking path' do
+      before do
+        setup_moves = %w[e2e4 e7e5 f1e2 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1g1c', 'white')).to be_nil
+      end
+    end
+
+    context 'when long castling with knight blocking path' do
+      before do
+        setup_moves = %w[d2d4 d7d5 d1d3 a7a6 c1d2 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1c1C', 'white')).to be_nil
+      end
+    end
+
+    context 'when short castling with bishop blocking path' do
+      before do
+        setup_moves = %w[g1f3 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1g1c', 'white')).to be_nil
+      end
+    end
+
+    context 'when long castling with bishop blocking path' do
+      before do
+        setup_moves = %w[d2d4 d7d5 d1d2 a7a6 b1c3 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1c1C', 'white')).to be_nil
+      end
+    end
+
+    context 'when long castling with queen blocking path' do
+      before do
+        setup_moves = %w[d2d4 d7d5 c1d2 a7a6 b1c3 a6a5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1c1C', 'white')).to be_nil
+      end
+    end
+
+    context 'when short castling after king has moved' do
+      before do
+        setup_moves = %w[e2e4 e7e5 f1d3 a7a6 g1f3 a6a5 e1e2 a5a4 e2e1 a4a3]
+        setup_moves.each do |move|
+          board.update_board(move)
+          board.add_move(move)
+        end
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1g1c', 'white')).to be_nil
+      end
+    end
+
+    context 'when short castling after rook has moved' do
+      before do
+        setup_moves = %w[e2e4 e7e5 f1d3 a7a6 g1f3 a6a5 h1g1 a5a4 g1h1 a4a3]
+        setup_moves.each do |move|
+          board.update_board(move)
+          board.add_move(move)
+        end
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1g1c', 'white')).to be_nil
+      end
+    end
+
+    context 'when long castling after king has moved' do
+      before do
+        setup_moves = %w[d2d4 d7d5 d1d3 a7a6 c1d2 a6a5 b1c3 a5a4 e1d1 a4a3 d1e1 h7h6]
+        setup_moves.each do |move|
+          board.update_board(move)
+          board.add_move(move)
+        end
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1c1C', 'white')).to be_nil
+      end
+    end
+
+    context 'when long castling after rook has moved' do
+      before do
+        setup_moves = %w[d2d4 d7d5 d1d3 a7a6 c1d2 a6a5 b1c3 a5a4 a1b1 a4a3 b1a1 h7h6]
+        setup_moves.each do |move|
+          board.update_board(move)
+          board.add_move(move)
+        end
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1c1C', 'white')).to be_nil
+      end
+    end
+
+    context 'when short castling with start square in check' do
+      before do
+        setup_moves = %w[e2e4 e7e5 d2d3 a7a6 f1e2 a6a5 g1f3 f8b4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1g1c', 'white')).to be_nil
+      end
+    end
+
+    context 'when short castling with middle square in check' do
+      before do
+        setup_moves = %w[e2e4 e7e5 g1f3 b7b6 f1a6 c8a6b]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1g1c', 'white')).to be_nil
+      end
+    end
+
+    context 'when short castling with end square in check' do
+      before do
+        setup_moves = %w[e2e4 e7e5 f2f3 a7a6 f1c4 a6a5 g1h3 f8c5]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1g1c', 'white')).to be_nil
+      end
+    end
+
+    context 'when long castling with start square in check' do
+      before do
+        setup_moves = %w[d2d4 e7e5 d1d3 a7a6 c1e3 a6a5 b1a3 f8b4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1c1C', 'white')).to be_nil
+      end
+    end
+
+    context 'when long castling with middle square in check' do
+      before do
+        setup_moves = %w[d2d4 d7d5 e2e4 a7a6 d1h5 a6a5 c1d2 a5a4 b1c3 c8g4]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1c1C', 'white')).to be_nil
+      end
+    end
+
+    context 'when long castling with end square in check' do
+      before do
+        setup_moves = %w[d2d4 d7d5 d1d3 g7g6 c1h6 f8h6b b1c3 a7a6]
+        setup_moves.each { |move| board.update_board(move) }
+      end
+
+      it 'returns nil' do
+        expect(board.valid_move?('e1c1C', 'white')).to be_nil
       end
     end
   end
