@@ -27,6 +27,8 @@ class King < Piece
     destinations.filter { |new_rank, new_file| new_rank.between?(0, 7) && new_file.between?(0, 7) }
   end
 
+  private
+
   def castling_possible_destinations(castling_type)
     case castling_type
     when 'c' then [[@start_rank, 6]]

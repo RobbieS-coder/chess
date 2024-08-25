@@ -104,7 +104,9 @@ class Board
   end
 
   def valid_to_piece?(to_piece, captured, colour)
-    !(to_piece && (to_piece.abbrev != captured || to_piece.colour == colour))
+    return to_piece && to_piece.abbrev == captured && to_piece.colour != colour if captured
+
+    to_piece.nil?
   end
 
   def promotion_checks(from, to, promoted)
