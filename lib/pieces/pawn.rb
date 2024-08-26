@@ -4,6 +4,8 @@ require_relative 'piece'
 
 # Represents the pawn piece and its movement
 class Pawn < Piece
+  attr_reader :start_rank
+
   def initialize(colour)
     super(colour)
     @start_rank = @colour == 'white' ? 6 : 1

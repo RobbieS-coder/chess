@@ -16,6 +16,16 @@ class MoveHistory
     @history
   end
 
+  def pawn_double_step_last_turn?(start_rank_index, end_rank_index, file_index)
+    return false unless (start_rank_index - end_rank_index).abs == 2
+
+    start_rank = (8 - start_rank_index).to_s
+    end_rank = (8 - end_rank_index).to_s
+    file = ('a'.ord + file_index).chr
+
+    @history.last == (file + start_rank + file + end_rank)
+  end
+
   def castling_pieces_moved?(castling_type, start_rank_index)
     start_rank = 8 - start_rank_index
     rook_file = castling_type == 'c' ? 'h' : 'a'

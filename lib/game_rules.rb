@@ -9,15 +9,28 @@ module GameRules
 
   private
 
-  def legal_move?(after_board, colour, captured)
+  def legal_move?(move, colour, captured)
+    after_board = temp_board(move)
     return false if in_check?(colour, after_board)
-    return legal_special_move?(captured, colour) if captured&.match?(/[EcC]/)
+    return legal_special_move?(move, captured, colour) if captured&.match?(/[EcC]/)
 
     true
   end
 
-  def legal_special_move?(move_type, colour)
-    move_type&.match?(/[cC]/) ? legal_castling?(move_type, colour) : legal_en_passant?(move_type)
+  def legal_special_move?(move, move_type, colour)
+    move_type == 'E' ? legal_en_passant?(move) : legal_castling?(move_type, colour)
+  end
+
+  def legal_en_passant?(move)
+    parsed_move = parse_move(move)
+    from, to = parsed_move.values_at(:from, :to)
+    from_rank = from.first
+    to_file = to.last
+    captured_piece = @game_board[from_rank][to_file]
+    return false unless captured_piece.instance_of?(Pawn)
+    return false unless @move_history.pawn_double_step_last_turn?(captured_piece.start_rank, from_rank, to_file)
+
+    true
   end
 
   def legal_castling?(castling_type, colour)

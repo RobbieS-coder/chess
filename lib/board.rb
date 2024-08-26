@@ -29,7 +29,7 @@ class Board
     return false unless preliminary_checks([from, to], colour, captured)
     return false unless promotion_checks(from, to, promoted)
     return false unless from_piece.in_possible_destinations?([from, to], abbrev_board, captured)
-    return unless legal_move?(temp_board(move), colour, captured)
+    return unless legal_move?(move, colour, captured)
 
     true
   end
