@@ -37,11 +37,9 @@ class Board
   def update_board(move, board = @game_board)
     parsed_move = parse_move(move)
     from, to, captured, promoted = parsed_move.values_at(:from, :to, :captured, :promoted)
-    from_rank, from_file = from
-    to_rank, to_file = to
-    board[to_rank][to_file] = board[from_rank][from_file]
-    board[from_rank][from_file] = nil
-    castle(from_rank, captured, board) if captured&.match?(/[cC]/)
+    move_piece(from, to, board)
+    en_passant_capture(from.first, to.last, board) if captured == 'E'
+    castle(from.first, captured, board) if captured&.match?(/[cC]/)
     promote_pawn(to, promoted, board) if promoted
   end
 
@@ -120,6 +118,17 @@ class Board
     end
 
     true
+  end
+
+  def move_piece(from, to, board)
+    from_rank, from_file = from
+    to_rank, to_file = to
+    board[to_rank][to_file] = board[from_rank][from_file]
+    board[from_rank][from_file] = nil
+  end
+
+  def en_passant_capture(rank, file, board)
+    board[rank][file] = nil
   end
 
   def castle(rank, castling_type, board)
