@@ -48,14 +48,19 @@ module GameRules
   end
 
   def all_possible_destinations(colour, board)
-    all_possible_destinations = []
+    all_possible_moves(colour, board).map(&:last)
+  end
+
+  def all_possible_moves(colour, board)
+    all_possible_moves = []
     board.each_with_index do |row, rank_index|
       row.each_with_index do |piece, file_index|
         next if piece.nil? || piece.colour != colour
 
-        all_possible_destinations += piece.possible_destinations([rank_index, file_index], abbrev_board(board), 'k')
+        all_possible_destinations = piece.possible_destinations([rank_index, file_index], abbrev_board(board), 'k')
+        all_possible_destinations.each { |dest| all_possible_moves << [[rank_index, file_index], dest] }
       end
     end
-    all_possible_destinations
+    all_possible_moves
   end
 end
