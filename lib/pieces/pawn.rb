@@ -25,7 +25,7 @@ class Pawn < Piece
     destinations = []
     destinations += [[rank + @direction, file + 1], [rank + @direction, file - 1]] if captured
     destinations << [rank + @direction, file] unless captured
-    destinations << [rank + 2 * @direction, file] if rank == @start_rank
+    destinations << [rank + 2 * @direction, file] if rank == @start_rank && !captured
     destinations.filter! { |new_rank, new_file| new_rank.between?(0, 7) && new_file.between?(0, 7) }
     destinations.filter { |destination| unblocked_path?(from, destination, board) }
   end
