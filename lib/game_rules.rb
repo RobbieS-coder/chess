@@ -8,8 +8,7 @@ module GameRules
   end
 
   def game_over?(colour)
-    boards = all_possible_moves(colour).map { |from, to| temp_board(from_coords(from) + from_coords(to)) }
-    boards.all? { |board| in_check?(colour, board) }
+    all_valid_smith_moves(colour).empty?
   end
 
   private
@@ -67,6 +66,12 @@ module GameRules
         dests.each { |dest| all_possible_moves << [[rank_ind, file_ind], dest] }
       end
     end
-    all_possible_moves
+    all_possible_moves.uniq
+  end
+
+  def all_valid_smith_moves(colour)
+    moves = all_possible_moves(colour, ['k', nil])
+    smith_moves = moves.map { |from, to| from_coords(from) + from_coords(to) + abbrev_board[to.first][to.last].to_s }
+    smith_moves.filter { |move| valid_move?(move, colour) }
   end
 end
