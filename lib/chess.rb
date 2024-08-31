@@ -19,9 +19,12 @@ class Chess
   def play
     loop do
       display
+      break if @board.game_over?(@current_player.colour)
+
       handle_move(valid_player_input)
       switch_player
     end
+    puts 'Game Over!'
   end
 
   def valid_player_input

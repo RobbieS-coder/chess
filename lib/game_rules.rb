@@ -7,6 +7,11 @@ module GameRules
     all_possible_destinations(opposition_colour, board).any? { |rank, file| board[rank][file] == king(colour) }
   end
 
+  def game_over?(colour)
+    boards = all_possible_moves(colour).map { |from, to| temp_board(from_coords(from) + from_coords(to)) }
+    boards.all? { |board| in_check?(colour, board) }
+  end
+
   private
 
   def legal_move?(move, colour, captured)
@@ -51,7 +56,7 @@ module GameRules
     all_possible_moves(colour, board).map(&:last)
   end
 
-  def all_possible_moves(colour, board)
+  def all_possible_moves(colour, board = @game_board)
     all_possible_moves = []
     board.each_with_index do |row, rank_index|
       row.each_with_index do |piece, file_index|
