@@ -35,7 +35,7 @@ class Chess
 
       case @board.valid_move?(move, @current_player.colour)
       when true then return move
-      when false then puts 'Invalid move'
+      when false then puts 'Invalid move pattern'
       when nil then puts 'Illegal move'
       end
     end
