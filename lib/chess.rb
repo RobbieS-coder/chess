@@ -24,8 +24,10 @@ class Chess
       handle_move(valid_player_input)
       switch_player
     end
-    puts 'Game Over!'
+    announce_winner
   end
+
+  private
 
   def valid_player_input
     loop do
@@ -45,6 +47,10 @@ class Chess
   end
 
   def switch_player
-    @current_player = @current_player == @white ? @black : @white
+    @current_player = other_player
+  end
+
+  def other_player
+    @current_player == @white ? @black : @white
   end
 end

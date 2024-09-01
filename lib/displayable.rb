@@ -53,4 +53,10 @@ module Displayable
   def switch_colour(colour)
     colour == 'white' ? 'black' : 'white'
   end
+
+  def announce_winner
+    checkmate_message = "#{other_player.name} checkmated #{@current_player.name}!"
+    stalemate_message = 'Stalemate!'
+    puts @board.in_check?(@current_player.colour) ? checkmate_message : stalemate_message
+  end
 end
