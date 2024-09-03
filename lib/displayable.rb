@@ -12,7 +12,7 @@ module Displayable
     puts "\n"
     puts file_indicators
     display_recent_moves
-    puts 'Check!' if @board.in_check?(@current_player.colour) && !@board.game_over?(@current_player.colour)
+    display_possible_statements
   end
 
   def file_indicators
@@ -50,6 +50,11 @@ module Displayable
     puts "  #{moves_str}"
   end
 
+  def display_possible_statements
+    puts 'Check!' if @board.in_check?(@current_player.colour) && !@board.game_over?(@current_player.colour)
+    puts "Draw conditions have been met. Enter 'd' to claim it." if @board.valid_draw?
+  end
+
   def switch_colour(colour)
     colour == 'white' ? 'black' : 'white'
   end
@@ -58,5 +63,9 @@ module Displayable
     checkmate_message = "#{other_player.name} checkmated #{@current_player.name}!"
     stalemate_message = 'Stalemate!'
     puts @board.in_check?(@current_player.colour) ? checkmate_message : stalemate_message
+  end
+
+  def announce_draw
+    puts 'Draw!'
   end
 end

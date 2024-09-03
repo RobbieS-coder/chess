@@ -11,6 +11,10 @@ module GameRules
     all_valid_smith_moves(colour).empty?
   end
 
+  def valid_draw?
+    true
+  end
+
   private
 
   def legal_move?(move, colour, captured)

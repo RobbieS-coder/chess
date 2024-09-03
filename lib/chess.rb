@@ -21,10 +21,13 @@ class Chess
       display
       break if @board.game_over?(@current_player.colour)
 
-      handle_move(valid_player_input)
+      move = valid_player_input
+      break if move == 'd' && @board.valid_draw?
+
+      handle_move(move)
       switch_player
     end
-    announce_winner
+    @board.game_over?(@current_player.colour) ? announce_winner : announce_draw
   end
 
   private
@@ -32,6 +35,7 @@ class Chess
   def valid_player_input
     loop do
       move = @ui.player_input
+      return move if move == 'd'
 
       case @board.valid_move?(move, @current_player.colour)
       when true then return move
