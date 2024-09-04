@@ -75,7 +75,11 @@ module GameRules
 
   def all_valid_smith_moves(colour)
     moves = all_possible_moves(colour, ['k', nil])
-    smith_moves = moves.map { |from, to| from_coords(from) + from_coords(to) + abbrev_board[to.first][to.last].to_s }
+    smith_moves = []
+    moves.each do |from, to|
+      base_smith_move = from_coords(from) + from_coords(to)
+      smith_moves += [base_smith_move + abbrev_board[to.first][to.last].to_s, "#{base_smith_move}E"]
+    end
     smith_moves.filter { |move| valid_move?(move, colour) }
   end
 end

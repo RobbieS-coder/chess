@@ -59,13 +59,14 @@ module Displayable
     colour == 'white' ? 'black' : 'white'
   end
 
-  def announce_winner
+  def announce_game_end
     checkmate_message = "#{other_player.name} checkmated #{@current_player.name}!"
     stalemate_message = 'Stalemate!'
     puts @board.in_check?(@current_player.colour) ? checkmate_message : stalemate_message
   end
 
-  def announce_draw
-    puts 'Draw!'
+  def announce_other
+    puts "#{@current_player.name} resigned!" if @resigning
+    puts @board.valid_draw? ? "#{@current_player.name} claimed a draw!" : 'Draw!' if @drawing
   end
 end
