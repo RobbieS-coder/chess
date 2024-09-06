@@ -65,8 +65,11 @@ module Displayable
     puts @board.in_check?(@current_player.colour) ? checkmate_message : stalemate_message
   end
 
-  def announce_other
-    puts "#{@current_player.name} resigned!" if @resigning
-    puts @board.valid_draw? ? "#{@current_player.name} claimed a draw!" : 'Draw!' if @drawing
+  def announce_resignation
+    puts "#{@current_player.name} resigned!"
+  end
+
+  def announce_draw
+    puts @board.valid_draw? ? "#{@current_player.name} claimed a draw!" : 'Draw!'
   end
 end

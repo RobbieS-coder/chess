@@ -18,21 +18,29 @@ class Chess
   end
 
   def play
+    move = game_loop
+    case move
+    when 'r' then announce_resignation
+    when 'd' then announce_draw
+    else announce_game_end
+    end
+  end
+
+  private
+
+  def game_loop
     loop do
       display
-      break if @board.game_over?(@current_player.colour)
+      return if @board.game_over?(@current_player.colour)
 
       move = valid_player_input
-      check_drawing_and_resigning(move)
-      break if @resigning || @drawing
+      return move if move == 'r' || (move == 'd' && (@board.valid_draw? || accept_draw?))
+      next if move == 'd'
 
       handle_move(move)
       switch_player
     end
-    @board.game_over?(@current_player.colour) ? announce_game_end : announce_other
   end
-
-  private
 
   def valid_player_input
     loop do
@@ -44,13 +52,6 @@ class Chess
       when false then puts 'Invalid move pattern'
       when nil then puts 'Illegal move'
       end
-    end
-  end
-
-  def check_drawing_and_resigning(move)
-    case move
-    when 'r' then @resigning = true
-    when 'd' then @drawing = true if @board.valid_draw? || accept_draw?
     end
   end
 
