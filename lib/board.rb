@@ -34,6 +34,11 @@ class Board
     true
   end
 
+  def handle_move(move)
+    update_board(move)
+    @move_history.add_move(move)
+  end
+
   def update_board(move, board = @game_board)
     parsed_move = parse_move(move)
     from, to, captured, promoted = parsed_move.values_at(:from, :to, :captured, :promoted)
@@ -49,10 +54,6 @@ class Board
 
   def recent_moves
     @move_history.recent_moves
-  end
-
-  def add_move(move)
-    @move_history.add_move(move)
   end
 
   private

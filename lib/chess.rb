@@ -37,7 +37,7 @@ class Chess
       return move if move == 'r' || (move == 'd' && (@board.valid_draw? || accept_draw?))
       next if move == 'd'
 
-      handle_move(move)
+      @board.handle_move(move)
       switch_player
     end
   end
@@ -53,11 +53,6 @@ class Chess
       when nil then puts 'Illegal move'
       end
     end
-  end
-
-  def handle_move(move)
-    @board.update_board(move)
-    @board.add_move(move)
   end
 
   def switch_player
