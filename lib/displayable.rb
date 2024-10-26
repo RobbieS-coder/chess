@@ -52,7 +52,6 @@ module Displayable
 
   def display_possible_statements
     puts 'Check!' if @board.in_check?(@current_player.colour) && !@board.game_over?(@current_player.colour)
-    puts "Draw conditions have been met. Enter 'd' to claim it." if @board.valid_draw?
   end
 
   def switch_colour(colour)
@@ -70,6 +69,6 @@ module Displayable
   end
 
   def announce_draw
-    puts @board.valid_draw? ? "#{@current_player.name} claimed a draw!" : 'Draw!'
+    puts "#{@other_player.name} accepted #{@current_player.name}'s draw proposal.\nDraw!"
   end
 end

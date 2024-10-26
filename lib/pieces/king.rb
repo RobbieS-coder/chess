@@ -21,7 +21,7 @@ class King < Piece
 
   def possible_destinations(from, _board, captured)
     rank, file = from
-    return castling_possible_destinations(captured) if captured&.match?(/[cC]/)
+    return castling_possible_destinations(captured) if captured&.match?(/^[cC]$/)
 
     destinations = ((-1..1).to_a.product((-1..1).to_a) - [[0, 0]]).map { |dr, df| [rank + dr, file + df] }
     destinations.filter { |new_rank, new_file| new_rank.between?(0, 7) && new_file.between?(0, 7) }

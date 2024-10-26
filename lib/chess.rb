@@ -34,7 +34,7 @@ class Chess
       return if @board.game_over?(@current_player.colour)
 
       move = valid_player_input
-      return move if move == 'r' || (move == 'd' && (@board.valid_draw? || accept_draw?))
+      return move if move == 'r' || (move == 'd' && accept_draw?)
       next if move == 'd'
 
       @board.handle_move(move)
@@ -45,7 +45,7 @@ class Chess
   def valid_player_input
     loop do
       move = player_input
-      return move if /[rd]/.match?(move)
+      return move if /^[rd]$/.match?(move)
 
       case @board.valid_move?(move, @current_player.colour)
       when true then return move

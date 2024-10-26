@@ -11,16 +11,12 @@ module GameRules
     all_valid_smith_moves(colour).empty?
   end
 
-  def valid_draw?
-    true
-  end
-
   private
 
   def legal_move?(move, colour, captured)
     after_board = temp_board(move)
     return false if in_check?(colour, after_board)
-    return legal_special_move?(move, captured, colour) if captured&.match?(/[EcC]/)
+    return legal_special_move?(move, captured, colour) if captured&.match?(/^[EcC]$/)
 
     true
   end

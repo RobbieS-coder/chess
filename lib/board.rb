@@ -44,7 +44,7 @@ class Board
     from, to, captured, promoted = parsed_move.values_at(:from, :to, :captured, :promoted)
     move_piece(from, to, board)
     en_passant_capture(from.first, to.last, board) if captured == 'E'
-    castle(from.first, captured, board) if captured&.match?(/[cC]/)
+    castle(from.first, captured, board) if captured&.match?(/^[cC]$/)
     promote_pawn(to, promoted, board) if promoted
   end
 
@@ -92,7 +92,7 @@ class Board
     from_piece = @game_board[from.first][from.last]
     to_piece = @game_board[to.first][to.last]
     en_passant_capturing = from_piece.instance_of?(Pawn) && captured == 'E'
-    castling = from_piece.instance_of?(King) && captured&.match?(/[cC]/)
+    castling = from_piece.instance_of?(King) && captured&.match?(/^[cC]$/)
     return false unless valid_from_piece?(from_piece, colour)
     return false unless en_passant_capturing || castling || valid_to_piece?(to_piece, captured, colour)
 
