@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Keeps track of the moves made
+# Keeps track of the moves made and
 class MoveHistory
   def initialize(history = [])
     @history = history
@@ -33,5 +33,9 @@ class MoveHistory
     rook_position = "#{rook_file}#{start_rank}"
 
     @history.any? { |move| move.start_with?(king_position) || move.start_with?(rook_position) }
+  end
+
+  def serialised_history
+    Marshal.dump(@history)
   end
 end

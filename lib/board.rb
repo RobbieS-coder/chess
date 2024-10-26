@@ -8,14 +8,13 @@ require_relative 'pieces/queen'
 require_relative 'pieces/rook'
 require_relative 'notation_parser'
 require_relative 'game_rules'
-require_relative 'move_history'
 
 # Holds game board and interfaces with pieces
 class Board
   include NotationParser
   include GameRules
 
-  def initialize(move_history = MoveHistory.new)
+  def initialize(move_history)
     @move_history = move_history
     @white_king = King.new('white')
     @black_king = King.new('black')
@@ -34,11 +33,6 @@ class Board
     true
   end
 
-  def handle_move(move)
-    update_board(move)
-    @move_history.add_move(move)
-  end
-
   def update_board(move, board = @game_board)
     parsed_move = parse_move(move)
     from, to, captured, promoted = parsed_move.values_at(:from, :to, :captured, :promoted)
@@ -50,10 +44,6 @@ class Board
 
   def symbol_board
     @game_board.map { |row| row.map { |square| square.nil? ? ' ' : square.symbol } }
-  end
-
-  def recent_moves
-    @move_history.recent_moves
   end
 
   private
