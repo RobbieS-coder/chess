@@ -2,8 +2,14 @@
 
 # Keeps track of the moves made and
 class MoveHistory
-  def initialize(history = [])
-    @history = history
+  def initialize
+    @history = []
+  end
+
+  def first_player
+    return 'white' if @history.empty?
+
+    @history.length.even? ? 'white' : 'black'
   end
 
   def add_move(move)

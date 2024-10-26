@@ -24,15 +24,4 @@ module UI
       puts "Invalid input. Enter 'y' to accept the draw or 'n' to reject it."
     end
   end
-
-  def overwrite_data?
-    puts "A game between these two players has already been saved.\nWould you like to overwrite this save data? (y/n)"
-
-    loop do
-      choice = gets.chomp
-      return choice == 'y' if choice.match(/^[yn]$/)
-
-      puts "Invalid input. Enter 'y' to overwrite the existing save data or 'n' to cancel the saving operation."
-    end
-  end
 end

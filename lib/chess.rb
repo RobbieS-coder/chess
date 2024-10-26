@@ -11,14 +11,14 @@ require_relative 'serialiser'
 class Chess
   include Displayable
   include UI
-  include Serialiser
 
-  def initialize(white = Player.new('white'), black = Player.new('black', white.name), move_history = MoveHistory.new)
-    @board = Board.new(move_history)
-    @move_history = move_history
+  def initialize(white = Player.new('white'), black = Player.new('black', white.name), history = nil)
+    @move_history = MoveHistory.new
+    @board = Board.new(@move_history)
     @white = white
     @black = black
-    @current_player = @white
+    history&.each { |move| handle_move(move) }
+    @current_player = @move_history.first_player == 'white' ? @white : @black
   end
 
   def play
@@ -41,7 +41,7 @@ class Chess
 
       return move if move == 'r' || (move == 'd' && accept_draw?)
 
-      save_game(@white.name, @black.name) if move == 's'
+      Serialiser.save_game(@white.name, @black.name, @move_history.serialised_history) if move == 's'
       next if %w[d s].include?(move)
 
       handle_move(move)
